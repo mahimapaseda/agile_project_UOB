@@ -1,0 +1,59 @@
+{
+  "packageId": "lk.deltagemunupura.dbms",
+  "host": "dgmvdbms.vercel.app",
+  "name": "Delta Gemunupura College DBMS",
+  "launcherName": "Delta DBMS",
+  "display": "standalone",
+  "themeColor": "#1E3A8A",
+  "themeColorDark": "#1E3A8A",
+  "navigationColor": "#1E3A8A",
+  "navigationColorDark": "#172554",
+  "navigationDividerColor": "#1E40AF",
+  "navigationDividerColorDark": "#1E3A8A",
+  "backgroundColor": "#F1F5F9",
+  "enableNotifications": false,
+  "startUrl": "/?source=pwa&v=4",
+  "iconUrl": "https://dgmvdbms.vercel.app/icons/icon-512.png",
+  "maskableIconUrl": "https://dgmvdbms.vercel.app/icons/icon-maskable-512.png",
+  "monochromeIconUrl": "https://dgmvdbms.vercel.app/icons/icon-192.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "dgc-dbms"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://dgmvdbms.vercel.app/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {
+    "playBilling": {
+      "enabled": false
+    },
+    "locationDelegation": {
+      "enabled": false
+    }
+  },
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "minSdkVersion": 23,
+  "orientation": "portrait",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "protocolHandlers": [],
+  "fileHandlers": [],
+  "launchHandlerClientMode": "navigate-existing",
+  "displayOverride": [
+    "standalone",
+    "minimal-ui"
+  ],
+  "targetSdkVersion": 35,
+  "compileSdkVersion": 35,
+  "appVersion": "1.0.0"
+}

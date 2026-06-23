@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Delta DBMS">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a8a"/>
+      <stop offset="100%" style="stop-color:#2563eb"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="108" fill="url(#bg)"/>
+  <rect x="72" y="72" width="368" height="368" rx="64" fill="#ffffff" stroke="#fbbf24" stroke-width="8"/>
+  <circle cx="256" cy="232" r="88" fill="#1e40af" opacity="0.12"/>
+  <text x="256" y="252" text-anchor="middle" fill="#1e3a8a" font-family="Georgia,serif" font-size="52" font-weight="700">Δ</text>
+  <text x="256" y="318" text-anchor="middle" fill="#1e3a8a" font-family="system-ui,sans-serif" font-size="28" font-weight="700">Delta DBMS</text>
+</svg>

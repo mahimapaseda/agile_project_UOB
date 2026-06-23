@@ -1,0 +1,59 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# testing
+/coverage
+
+# next.js
+/.next/
+/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+.env*
+
+# Firebase Admin SDK key (never commit)
+firebase-service-account.json
+*-firebase-adminsdk-*.json
+.vercel-FIREBASE_*.txt
+.vercel-ENV-SETUP.txt
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+/app/generated/prisma
+
+.vercel
+
+# Android TWA build outputs (sources under twa/ are committed)
+twa/android.keystore
+twa/*.apk
+twa/app/build/
+twa/build/
+twa/.gradle/
+twa/local.properties

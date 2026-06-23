@@ -1,0 +1,12 @@
+// Legacy stub — NOT used by this application.
+// Delta Gemunupura DBMS uses Firebase Firestore exclusively.
+// Kept for reference only; do not run `prisma generate` or add a database URL.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
