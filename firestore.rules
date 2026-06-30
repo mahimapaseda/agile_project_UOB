@@ -1,0 +1,209 @@
+rules_version = '2';
+// Role matrix (aligned with lib/access-control.ts):
+// - principal, technical_officer: admin + full write (students, exams, staff, inventory)
+// - vice_principal: read school data; no writes (view-only in app)
+// - clerk: read/write students, exams, inventory; no staff record write
+// - teacher: read staff directory, grade-scoped students/results, exams read-only
+// - parent/student: own linked admission number only
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function staffDoc() {
+      return /databases/$(database)/documents/staff_users/$(request.auth.uid);
+    }
+    function parentDoc() {
+      return /databases/$(database)/documents/parents/$(request.auth.uid);
+    }
+    function studentUserDoc() {
+      return /databases/$(database)/documents/student_users/$(request.auth.uid);
+    }
+
+    function isStaffAccount() {
+      return isSignedIn() && exists(staffDoc());
+    }
+    function staffRole() {
+      return isStaffAccount() ? get(staffDoc()).data.staffRole : '';
+    }
+    function staffIsActive() {
+      return isStaffAccount()
+        && (!('isActive' in get(staffDoc()).data) || get(staffDoc()).data.isActive != false);
+    }
+    function isAdmin() {
+      return staffIsActive() && staffRole() in ['principal', 'technical_officer'];
+    }
+    function canManageSchoolData() {
+      return staffIsActive()
+        && staffRole() in ['principal', 'technical_officer', 'vice_principal', 'teacher', 'clerk'];
+    }
+    // VP excluded — matches isViewOnlyStaff() in the app
+    function canWriteStudentData() {
+      return staffIsActive()
+        && staffRole() in ['principal', 'technical_officer', 'clerk'];
+    }
+    function canWriteExamData() {
+      return staffIsActive()
+        && staffRole() in ['principal', 'technical_officer', 'clerk'];
+    }
+
+    function isParent() {
+      return isSignedIn() && exists(parentDoc());
+    }
+    function parentIsActive() {
+      return isParent()
+        && (!('isActive' in get(parentDoc()).data) || get(parentDoc()).data.isActive != false);
+    }
+    function parentLinkedId() {
+      return parentIsActive() ? get(parentDoc()).data.linkedId : '';
+    }
+    function isStudentUser() {
+      return isSignedIn() && exists(studentUserDoc());
+    }
+    function studentUserIsActive() {
+      return isStudentUser()
+        && (!('isActive' in get(studentUserDoc()).data) || get(studentUserDoc()).data.isActive != false);
+    }
+    function studentLinkedId() {
+      return studentUserIsActive() ? get(studentUserDoc()).data.linkedId : '';
+    }
+
+    function canReadAllStudents() {
+      return staffIsActive()
+        && staffRole() in ['principal', 'technical_officer', 'vice_principal', 'clerk'];
+    }
+
+    function teacherAllowedGrades() {
+      return isStaffAccount()
+        && staffRole() == 'teacher'
+        && 'allowedStudentGrades' in get(staffDoc()).data
+        && get(staffDoc()).data.allowedStudentGrades is list
+        ? get(staffDoc()).data.allowedStudentGrades
+        : [];
+    }
+
+    function teacherCanReadStudentGrade(grade) {
+      return staffIsActive() && staffRole() == 'teacher' && grade in teacherAllowedGrades();
+    }
+
+    function canReadStudentData(admissionNumber) {
+      return canReadAllStudents()
+        || teacherCanReadStudentGrade(resource.data.grade)
+        || (parentIsActive() && parentLinkedId() == admissionNumber)
+        || (studentUserIsActive() && studentLinkedId() == admissionNumber);
+    }
+
+    function isOwnUid(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function staffSelfProfileUpdate(uid) {
+      return isOwnUid(uid)
+        && request.resource.data.staffRole == resource.data.staffRole
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.isActive == resource.data.isActive
+        && request.resource.data.linkedId == resource.data.linkedId
+        && request.resource.data.createdAt == resource.data.createdAt
+        && request.resource.data.allowedStudentGrades == resource.data.allowedStudentGrades;
+    }
+
+    function loginSelfProfileUpdate(uid) {
+      return isOwnUid(uid)
+        && request.resource.data.email == resource.data.email
+        && request.resource.data.isActive == resource.data.isActive
+        && request.resource.data.linkedId == resource.data.linkedId
+        && request.resource.data.createdAt == resource.data.createdAt;
+    }
+
+    // ─── Login account collections ───────────────────────────────────────
+    match /staff_users/{uid} {
+      allow read: if isAdmin() || isOwnUid(uid);
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || staffSelfProfileUpdate(uid);
+    }
+    function studentSelfProfileUpdate(uid) {
+      return loginSelfProfileUpdate(uid)
+        && (
+          !('mustChangePassword' in request.resource.data)
+          || request.resource.data.mustChangePassword == resource.data.get('mustChangePassword', false)
+          || (resource.data.get('mustChangePassword', false) == true
+              && request.resource.data.mustChangePassword == false)
+        );
+    }
+
+    match /student_users/{uid} {
+      allow read: if isAdmin() || isOwnUid(uid);
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || studentSelfProfileUpdate(uid);
+    }
+    match /parents/{uid} {
+      allow read: if isAdmin() || isOwnUid(uid);
+      allow create, delete: if isAdmin();
+      allow update: if isAdmin() || loginSelfProfileUpdate(uid);
+    }
+
+    // Quick PIN hashes — server (Admin SDK) only
+    match /pin_credentials/{id} {
+      allow read, write: if false;
+    }
+
+    // Legacy — deny (do not read on client)
+    match /users/{uid} {
+      allow read, write: if false;
+    }
+
+    // ─── School records ────────────────────────────────────────────────────
+    match /students/{id} {
+      allow read: if isSignedIn() && canReadStudentData(resource.data.admissionNumber);
+      allow create, update, delete: if canWriteStudentData();
+    }
+
+    match /staff/{id} {
+      allow read: if canManageSchoolData();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /examinations/{id} {
+      allow read: if canManageSchoolData();
+      allow create, update, delete: if canWriteExamData();
+    }
+
+    match /results/{id} {
+      allow read: if isSignedIn() && (
+        canReadAllStudents()
+        || teacherCanReadStudentGrade(resource.data.grade)
+        || (parentIsActive() && parentLinkedId() == resource.data.admissionNumber)
+        || (studentUserIsActive() && studentLinkedId() == resource.data.admissionNumber)
+      );
+      allow create, update, delete: if canWriteExamData();
+    }
+
+    match /inventory/{id} {
+      allow read: if canManageSchoolData();
+      allow create, update, delete: if canWriteStudentData();
+    }
+
+    match /timetables/{id} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if canWriteStudentData();
+    }
+
+    // School-wide integrations (e.g. official WhatsApp number)
+    match /school_settings/{docId} {
+      allow read: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // In-app notifications — per login account
+    match /user_notifications/{recipientUid} {
+      match /items/{notificationId} {
+        allow read, update: if isOwnUid(recipientUid);
+        allow delete: if isOwnUid(recipientUid) || isAdmin();
+        allow create: if isAdmin()
+          || (canWriteExamData() && request.resource.data.type == 'exam_result');
+      }
+    }
+  }
+}
