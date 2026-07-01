@@ -1,9 +1,9 @@
-﻿# Daily log — 2026-07-01
+﻿# Daily log — 2026-06-30
 
 ## Commit summary
 
-feat(staff): add staff dashboard routes
+feat(inventory): add Firestore inventory data layer
 
 ## Description
 
-Implemented staff list, create, profile detail, and edit pages under the dashboard staff module.
+Set up Firestore CRUD for the school asset register including search, filters, and cache invalidation for the inventory collection.
