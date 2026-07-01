@@ -1,9 +1,9 @@
-﻿# Daily log — 2026-07-01
+﻿# Daily log — 2026-06-30
 
 ## Commit summary
 
-feat(inventory): add inventory dashboard routes
+feat(timetable): add Firestore layer and schedule constants
 
 ## Description
 
-Implemented inventory list, create, item detail, and edit pages under the dashboard inventory module.
+Set up class timetable Firestore CRUD and shared constants for weekdays, period counts, and academic year options.
