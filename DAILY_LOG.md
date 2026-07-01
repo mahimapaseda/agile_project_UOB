@@ -2,8 +2,8 @@
 
 ## Commit summary
 
-feat(students): add student dashboard routes and exam performance page
+feat(exam): add examination dashboard routes and information page
 
 ## Description
 
-Implemented student list, create, profile detail, edit, and per-student exam performance routes under the dashboard students module.
+Implemented Next.js app routes for the examinations list, create, detail, and edit pages, plus the Examination Information leadership report page.
