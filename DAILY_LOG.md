@@ -1,9 +1,9 @@
-﻿# Daily log — 2026-06-30
+﻿# Daily log — 2026-07-01
 
 ## Commit summary
 
-feat(inventory): add Firestore inventory data layer
+feat(inventory): add inventory dashboard routes
 
 ## Description
 
-Set up Firestore CRUD for the school asset register including search, filters, and cache invalidation for the inventory collection.
+Implemented inventory list, create, item detail, and edit pages under the dashboard inventory module.
