@@ -1,9 +1,9 @@
-﻿# Daily log — 2026-06-30
+﻿# Daily log — 2026-07-01
 
 ## Commit summary
 
-feat(timetable): add Firestore layer and schedule constants
+feat(timetable): add timetable dashboard routes
 
 ## Description
 
-Set up class timetable Firestore CRUD and shared constants for weekdays, period counts, and academic year options.
+Implemented timetable list, create, detail, and edit pages under the dashboard timetable module.
