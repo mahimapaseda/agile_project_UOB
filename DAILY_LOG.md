@@ -2,8 +2,8 @@
 
 ## Commit summary
 
-feat(exam): add Firestore layer, types, and security rules
+feat(staff): add Firestore layer and staff form configuration
 
 ## Description
 
-Established the Examination module foundation with shared types, access-control helpers, client data cache, Firestore examinations CRUD, and Firestore security rules with composite indexes. This forms the integration hub for all other sprint modules.
+Set up staff Firestore CRUD, staff ID generation rules, and form field definitions aligned with the Google Form staff data collection structure.
