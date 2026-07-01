@@ -1,9 +1,9 @@
-﻿# Daily log — 2026-07-01
+﻿# Daily log — 2026-06-30
 
 ## Commit summary
 
-feat(timetable): add timetable dashboard routes
+feat(students): add Firestore layer and form configuration
 
 ## Description
 
-Implemented timetable list, create, detail, and edit pages under the dashboard timetable module.
+Set up student Firestore CRUD, search index helpers, and form field definitions matching the Google Form student enrollment structure.
