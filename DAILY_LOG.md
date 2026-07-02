@@ -2,8 +2,8 @@
 
 ## Commit summary
 
-feat(exam): add examination UI components and result dialogs
+feat(inventory): add inventory UI components
 
 ## Description
 
-Built examination directory, overview and curriculum panels, result add/view dialogs, grade and teacher detail dialogs, CSV import dialog, and class section picker components.
+Built inventory directory, item form, item details view, and CSV import dialog for the school asset register.
