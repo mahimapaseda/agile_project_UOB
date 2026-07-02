@@ -2,8 +2,8 @@
 
 ## Commit summary
 
-feat(inventory): add inventory UI components
+feat(students): add student directory and profile components
 
 ## Description
 
-Built inventory directory, item form, item details view, and CSV import dialog for the school asset register.
+Built students directory, enrollment form, profile details, profile photo, and CSV import dialog components.
