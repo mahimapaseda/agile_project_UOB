@@ -2,8 +2,8 @@
 
 ## Commit summary
 
-feat(students): add student directory and profile components
+feat(staff): add staff directory and profile components
 
 ## Description
 
-Built students directory, enrollment form, profile details, profile photo, and CSV import dialog components.
+Built staff directory, form, profile details, avatar, and CSV import dialog components for academic and non-academic staff management.
