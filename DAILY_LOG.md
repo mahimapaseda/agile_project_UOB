@@ -2,8 +2,8 @@
 
 ## Commit summary
 
-feat(staff): add staff directory and profile components
+feat(timetable): add timetable grid and form components
 
 ## Description
 
-Built staff directory, form, profile details, avatar, and CSV import dialog components for academic and non-academic staff management.
+Built timetables directory, weekly period grid, timetable form, and detail view components for class schedules.
